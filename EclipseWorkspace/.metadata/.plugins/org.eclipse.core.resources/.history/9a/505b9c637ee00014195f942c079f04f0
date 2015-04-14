@@ -1,0 +1,81 @@
+import java.util.*;
+
+public class HW3 {
+	
+	public static void main(String[] args){
+		
+		Scanner scan = new Scanner(System.in);
+		
+		long input;
+		
+		System.out.println("Enter a credit card number as a long interger: ");
+		input = scan.nextLong();
+		
+		
+		
+		System.out.println(getSize(input));
+	}
+	
+	public static boolean isValid(long number){
+		
+		int total = sumOfDoubleEvenPlace(number) + sumOfOddPlace(number);
+		
+		int pre = (int)getPrefix(number, 2);
+		
+		if(getSize(number) >= 13 && getSize(number)<=16){
+			
+			if(prefixMatched(number, pre)){
+				
+				if((total % 10) == 0){
+					
+					return true;
+				}else{
+					
+					return false;
+				}
+			}else{
+				
+				return false;
+			}
+		}else{
+			return false;
+		}
+	}
+	
+	public static int sumOfDoubleEvenPlace(long number){
+		
+		
+		
+		return 1;
+	}
+	
+	public static int getDigit(int number){
+		return 1;
+	}
+	
+	public static int sumOfOddPlace(long number){
+		return 1;
+	}
+	
+	public static boolean prefixMatched(long number, int d){
+		return true;
+	}
+	
+	public static int getSize(long d){
+		
+		int numOfInts = 0;
+		
+		while(d > 0){
+			
+			d = d/10;
+			
+			numOfInts ++;
+		}
+		
+		return numOfInts;
+	}
+	
+	public static long getPrefix(long number, int k){
+		return 43;
+	}
+}

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy 2 elements to &apos;Stage2/src/(default package)&apos;&#x0A;- Original project: &apos;Project&apos;&#x0A;- Destination element: &apos;Stage2/src/(default package)&apos;&#x0A;- Original elements:&#x0A;     Flight_Verifier.java&#x0A;     Passenger_Verifier.java" description="Copy compilation units" destination="=Stage2/src&lt;" element1="/src&lt;{Flight_Verifier.java" element2="/src&lt;{Passenger_Verifier.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1428088243867" units="2" version="1.0"/>
+</session>

@@ -1,0 +1,306 @@
+import static org.junit.Assert.*;
+
+import java.util.ArrayList;
+
+import junit.framework.Assert;
+
+import org.junit.Test;
+
+
+public class FlightGrader 
+{	
+	/*
+	 * Note the timeout mentioned on each of these tests.  This timeout will be enforced in the Autograded version
+	 * as well, and is clearly too small to allow console input within the objects.  This is very intentional.
+	 * (For clarification, "100" = 100 ms.)
+	 */
+	
+	@Test(timeout = 200)
+	public void constructorWithNullsTest() 
+	{
+		@SuppressWarnings("unused")
+		Flight f;
+		
+		try
+		{
+			f = new Flight(null, "MIA", 800, 930, 8);
+			fail("Didn't catch a null parameter!");
+		}
+		catch(RuntimeException e) {	}
+		
+		try
+		{
+			f = new Flight("MCO", null, 800, 930, 8);
+			fail("Didn't catch a null parameter!");
+		}
+		catch(RuntimeException e) {	}
+	}
+	
+	@Test(timeout = 100)
+	public void constructorAndGetterTest() 
+	{
+		Flight f = new Flight("MCO", "MIA", 800, 930, 8);
+		
+		assertEquals("MCO", f.getSourceAirport());
+		assertEquals("MIA", f.getDestinationAirport());
+		assertEquals(800, f.getTakeoffTime());
+		assertEquals(930, f.getLandingTime());
+		assertEquals(8, f.getCapacity());
+	}
+
+	@Test(timeout = 100)
+	public void singlePassengerAddTest()
+	{
+		Passenger p = new Passenger("Joshua", "Horton");
+		Flight f = new Flight("MCO", "MIA", 800, 930, 8);
+		
+		assertEquals("Passenger should have been successfully booked; was not.", true, f.addPassenger(p));
+		
+		ArrayList<Passenger> pList = f.getBookedPassengers();
+		
+		if(pList.size() != 1)
+		{
+			fail("No one is booked on the flight, despite a passenger booking it!");
+		}
+		
+		if(p != pList.get(0))
+		{
+			fail("The passenger is not booked on the flight!  (Did you make a duplicate instead of adding the passenger itself?");
+		}
+	}
+	
+	@Test(timeout = 100)
+	public void promotePassengerSuccessTest()
+	{
+		Passenger p = new Passenger("Joshua", "Horton");
+		Flight f = new Flight("MCO", "MIA", 800, 930, 8);
+		
+		p.addStandbyFlight(f);
+		assertEquals("An empty flight with capacity should allow a passenger to be promoted!", 1, f.promotePassengers());
+		assertEquals("The 'promoted' passenger should have recieved an alert for confirmation on their now-guaranteed booking!", 1, p.getAlerts().size());
+		
+		ArrayList<Flight> fList = p.getBookedFlights();
+		
+		if(fList.size() != 1)
+		{
+			fail("The passenger supposedly booked a flight, but it doesn't show on the flight list!");
+		}
+		
+	}
+	
+	@Test(timeout = 100)
+	public void promotePassengerDetailedMechanicsTest()
+	{
+		Passenger p = new Passenger("Joshua", "Horton");
+		Flight f = new Flight("MCO", "MIA", 800, 930, 8);
+		
+		p.addStandbyFlight(f);
+		
+		ArrayList<Flight> fList = p.getBookedFlights();
+		ArrayList<Flight> sfList = p.getStandbyFlights();
+		
+		if(fList.size() != 0)
+		{
+			fail("The passenger shouldn't be booked on a flight yet!");
+		}
+		
+		if(sfList.size() != 1)
+		{
+			fail("The passenger supposedly booked a flight on standby, but it doesn't show in the passenger's standby list!");
+		}
+		
+		ArrayList<Passenger> pList = f.getBookedPassengers();
+		ArrayList<Passenger> spList = f.getStandbyPassengers();
+		
+		if(pList.size() != 0)
+		{
+			fail("The flight shouldn't have a passenger booked on it yet!");
+		}
+		
+		if(spList.size() != 1)
+		{
+			fail("The flight doesn't have a standby passenger booked on it yet!");
+		}
+		
+		assertEquals("An empty flight with capacity should allow a passenger to be promoted!", 1, f.promotePassengers());
+		assertEquals("The 'promoted' passenger should have recieved an alert for confirmation on their now-guaranteed booking!", 1, p.getAlerts().size());
+		
+		fList = p.getBookedFlights();
+		sfList = p.getStandbyFlights();
+		
+		if(fList.size() != 1)
+		{
+			fail("The passenger isn't booked on the flight after promotion!");
+		}
+		
+		if(f != fList.get(0))
+		{
+			fail("The passenger is booked on a flight post-promotion, but not the right one!");
+		}
+		
+		if(sfList.size() != 0)
+		{
+			fail("The passenger still has a flight on standby!");
+		}
+		
+		pList = f.getBookedPassengers();
+		
+		if(pList.size() != 1)
+		{
+			fail("No one is booked on the flight, despite a passenger being promoted from standby!");
+		}
+		
+		if(p != pList.get(0))
+		{
+			fail("The passenger is not booked on the flight!  (Did you make a duplicate instead of adding the passenger itself?");
+		}	
+		
+		if(spList.size() != 0)
+		{
+			fail("The flight still has a standby passenger booked on it!");
+		}
+	}
+	
+	@Test(timeout = 100)
+	public void promotePassengerFailureTest()
+	{
+		Passenger p1 = new Passenger("Joshua", "Horton");
+		Passenger p2 = new Passenger("Clark", "Kent");
+		Flight f = new Flight("MCO", "MIA", 800, 930, 1);
+		
+		p1.bookFlight(f);
+		p2.addStandbyFlight(f);
+		
+		ArrayList<Flight> sfList = p2.getStandbyFlights();
+		
+		if(sfList.size() != 1)
+		{
+			fail("A passenger supposedly booked a flight on standby, but it doesn't show in the passenger's standby list!");
+		}
+		
+		ArrayList<Passenger> spList = f.getStandbyPassengers();
+		
+		if(spList.size() != 1)
+		{
+			fail("The flight doesn't have a standby passenger booked on it yet!");
+		}
+		
+		assertEquals("A full flight should not allow a passenger to be promoted!", 0, f.promotePassengers());
+		
+		
+		sfList = p2.getStandbyFlights();
+		
+		if(sfList.size() != 1)
+		{
+			fail("Passenger doesn't keep the flight in their standby list on a failed promotion attempt!");
+		}
+		
+		spList = f.getStandbyPassengers();
+		
+		if(spList.size() != 1)
+		{
+			fail("The flight doesn't have a standby passenger on its list after a failed promotion attempt!");
+		}
+		
+	}
+	
+	@Test(timeout = 100)
+	public void promotePassengerPartialBasicTest()
+	{
+		Passenger p1 = new Passenger("Joshua", "Horton");
+		Passenger p2 = new Passenger("Clark", "Kent");
+		Flight f = new Flight("MCO", "MIA", 800, 930, 1);
+		
+		p1.addStandbyFlight(f);
+		p2.addStandbyFlight(f);
+		
+		assertEquals("A flight with only one empty space should only allow one passenger to be promoted!", 1, f.promotePassengers());	
+	}
+	
+	@Test(timeout = 100)
+	public void promotePassengerPartialAlertTest()
+	{
+		Passenger p1 = new Passenger("Joshua", "Horton");
+		Passenger p2 = new Passenger("Clark", "Kent");
+		Flight f = new Flight("MCO", "MIA", 800, 930, 1);
+		
+		p1.addStandbyFlight(f);
+		p2.addStandbyFlight(f);
+		
+		assertEquals("A flight with only one empty space should only allow one passenger to be promoted!", 1, f.promotePassengers());	
+		
+		assertEquals("Passenger never received an alert upon \"promotion\"!", 1, p1.getAlerts().size());
+		assertEquals("Non-\"promoted\" passenger received an alert!", 0, p2.getAlerts().size());
+	}
+	
+	@Test(timeout = 100)
+	public void promotePassengerPartialAdvancedTest()
+	{
+		Passenger p1 = new Passenger("Joshua", "Horton");
+		Passenger p2 = new Passenger("Clark", "Kent");
+		Flight f = new Flight("MCO", "MIA", 800, 930, 1);
+		
+		p1.addStandbyFlight(f);
+		p2.addStandbyFlight(f);
+		
+		assertEquals("A flight with only one empty space should only allow one passenger to be promoted!", 1, f.promotePassengers());	
+		
+		ArrayList<Passenger> spList = f.getStandbyPassengers();
+		
+		spList = f.getStandbyPassengers();
+		
+		if(spList.size() != 1)
+		{
+			fail("The flight doesn't have a standby passenger on its list after \"promotions\" ran out of space!");
+			
+			if(spList.get(0) != p2)
+				fail("The wrong passenger got \"promoted\" when not enough space was available!  First come, first served!");
+		}
+		
+		ArrayList<Flight> sfList = p2.getStandbyFlights();
+		
+		if(sfList.size() != 1)
+		{
+			fail("Passenger doesn't keep a flight in their standby list when \"promotions\" ran out of space!");
+		}
+	}
+	
+	@Test(timeout = 100)
+	public void nullPassengerTest()
+	{
+		Flight f = new Flight("MCO", "MIA", 800, 930, 1);
+		
+		try
+		{
+			f.addPassenger(null);
+			fail("Flight successfully added a null Passenger!");
+		}
+		catch(RuntimeException e) { }
+		
+		try
+		{
+			f.addStandbyPassenger(null);
+			fail("Flight successfully added a null Passenger to its standby list!");
+		}
+		catch(RuntimeException e) { }
+	}
+	
+	@Test(timeout = 200)
+	public void flightCancellingTest()
+	{
+		Passenger p1 = new Passenger("Joshua", "Horton");
+		Passenger p2 = new Passenger("Clark", "Kent");
+		Flight f = new Flight("MCO", "MIA", 800, 930, 1);
+		
+		p1.bookFlight(f);
+		p2.addStandbyFlight(f);
+		
+		f.cancel();
+		
+		Assert.assertEquals("Booked passenger should have a single alert from flight cancellation!", 1, p1.getAlerts().size());
+		Assert.assertEquals("Standby passenger should have a single alert from flight cancellation!", 1, p2.getAlerts().size());
+		
+		Assert.assertEquals("Booked passenger's flight should be cancelled!", 0, p1.getBookedFlights().size());
+		Assert.assertEquals("Standby passenger's flight should be cancelled!", 0, p2.getStandbyFlights().size());
+	}
+}
