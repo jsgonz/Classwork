@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?><testrun name="ExtraCreditGrader" project="Project" tests="6" started="6" failures="1" errors="0" ignored="0">
+  <testsuite name="ExtraCreditGrader" time="0.001">
+    <testcase name="sameAirportTest" classname="ExtraCreditGrader" time="0.0"/>
+    <testcase name="doubleBookingTest" classname="ExtraCreditGrader" time="0.0"/>
+    <testcase name="overlappingTimesTest" classname="ExtraCreditGrader" time="0.0">
+      <failure>java.lang.AssertionError: Expected exception: java.lang.RuntimeException
+	at org.junit.internal.runners.statements.ExpectException.evaluate(ExpectException.java:32)
+	at org.junit.internal.runners.statements.FailOnTimeout$StatementThread.run(FailOnTimeout.java:74)
+
+</failure>
+    </testcase>
+    <testcase name="crossBookingTest" classname="ExtraCreditGrader" time="0.0"/>
+    <testcase name="legalBaseFlightTimes1" classname="ExtraCreditGrader" time="0.0"/>
+    <testcase name="legalBaseFlightTimes2" classname="ExtraCreditGrader" time="0.0"/>
+  </testsuite>
+</testrun>

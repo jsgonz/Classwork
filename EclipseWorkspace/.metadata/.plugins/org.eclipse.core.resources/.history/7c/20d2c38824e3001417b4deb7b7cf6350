@@ -1,0 +1,32 @@
+import java.util.*;
+import java.io.*;
+
+public class DataManager {
+
+	public static void exportData(String filename, ArrayList<Passenger> passengers, ArrayList<Flight> flights){
+		
+		PrintStream outFile;
+		
+		try{
+			
+			outFile = new PrintStream(filename);
+		}catch(FileNotFoundException e){
+			
+			System.err.println("Cannot create the file.");
+			return;
+		}
+		
+		outFile.println("#flightCount " + flights.size());
+		
+		for(int i = 0; i < flights.size(); i++){
+			outFile.println("#newFlight");
+			outFile.println(flights.get(i).getSourceAirport() + " , " + flights.get(i).getDestinationAirport() + " , " + flights.get(i).getTakeoffTime() + " , " + flights.get(i).getLandingTime());
+			outFile.println(flights.get(i).getCapacity());
+		}
+	}
+	
+	public static ImportData importData(String filename){
+		
+		
+	}
+}

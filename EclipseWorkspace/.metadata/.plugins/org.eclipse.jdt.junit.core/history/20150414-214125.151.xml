@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?><testrun name="ExtraCreditGrader" project="Project" tests="6" started="6" failures="5" errors="0" ignored="0">
+  <testsuite name="ExtraCreditGrader" time="0.001">
+    <testcase name="sameAirportTest" classname="ExtraCreditGrader" time="0.001"/>
+    <testcase name="doubleBookingTest" classname="ExtraCreditGrader" time="0.0">
+      <failure>java.lang.AssertionError: Expected exception: java.lang.RuntimeException
+	at org.junit.internal.runners.statements.ExpectException.evaluate(ExpectException.java:32)
+	at org.junit.internal.runners.statements.FailOnTimeout$StatementThread.run(FailOnTimeout.java:74)
+
+</failure>
+    </testcase>
+    <testcase name="overlappingTimesTest" classname="ExtraCreditGrader" time="0.0">
+      <failure>java.lang.AssertionError: Expected exception: java.lang.RuntimeException
+	at org.junit.internal.runners.statements.ExpectException.evaluate(ExpectException.java:32)
+	at org.junit.internal.runners.statements.FailOnTimeout$StatementThread.run(FailOnTimeout.java:74)
+
+</failure>
+    </testcase>
+    <testcase name="crossBookingTest" classname="ExtraCreditGrader" time="0.0">
+      <failure>java.lang.AssertionError: Expected exception: java.lang.RuntimeException
+	at org.junit.internal.runners.statements.ExpectException.evaluate(ExpectException.java:32)
+	at org.junit.internal.runners.statements.FailOnTimeout$StatementThread.run(FailOnTimeout.java:74)
+
+</failure>
+    </testcase>
+    <testcase name="legalBaseFlightTimes1" classname="ExtraCreditGrader" time="0.0">
+      <failure>java.lang.AssertionError: Flight's constructor doesn't ensure that the input times are possible times!
+	at org.junit.Assert.fail(Assert.java:88)
+	at ExtraCreditGrader.legalBaseFlightTimes1(ExtraCreditGrader.java:56)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:483)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.FailOnTimeout$StatementThread.run(FailOnTimeout.java:74)
+
+</failure>
+    </testcase>
+    <testcase name="legalBaseFlightTimes2" classname="ExtraCreditGrader" time="0.0">
+      <failure>java.lang.AssertionError: Flight's constructor doesn't ensure that the input times are possible times!
+	at org.junit.Assert.fail(Assert.java:88)
+	at ExtraCreditGrader.legalBaseFlightTimes2(ExtraCreditGrader.java:79)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:483)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.FailOnTimeout$StatementThread.run(FailOnTimeout.java:74)
+
+</failure>
+    </testcase>
+  </testsuite>
+</testrun>

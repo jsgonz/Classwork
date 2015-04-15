@@ -60,6 +60,22 @@ public class Passenger {
 	 * */
 	public boolean bookFlight(Flight f){
 		
+		if(bFlight.contains(f)){
+			
+			throw new RuntimeException();
+		}
+		
+		for(int i = 0; i < bFlight.size(); i++){
+			
+			if(((f.getTakeoffTime() >= bFlight.get(i).getTakeoffTime()) && 
+				(f.getTakeoffTime() <= bFlight.get(i).getLandingTime())) ||
+				((f.getLandingTime() >= bFlight.get(i).getTakeoffTime()) && 
+				(f.getLandingTime() <= bFlight.get(i).getLandingTime()))){
+				
+				throw new RuntimeException();
+			}
+		}
+		
 		bFlight.add(f);
 		
 		if(f.addPassenger(this)){
@@ -76,6 +92,10 @@ public class Passenger {
 	 * */
 	public boolean addStandbyFlight(Flight f){
 		
+		if(bFlight.contains(f)){
+			
+			throw new RuntimeException();
+		}
 		sFlight.add(f);
 		f.addStandbyPassenger(this);
 		

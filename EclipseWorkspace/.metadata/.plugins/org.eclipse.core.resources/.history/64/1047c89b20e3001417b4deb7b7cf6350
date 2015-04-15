@@ -1,0 +1,38 @@
+import java.util.*;
+import java.io.*;
+
+public class ImportData {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) 
+	{
+		String filename = "myData.txt";
+		PrintStream outFile;
+		
+		try 
+		{
+			outFile = new PrintStream(filename);
+		}
+		catch (FileNotFoundException e) 
+		{
+			System.err.println("Cannot create the file.");
+			return; // We can't place the file, so there's nothing to output to.
+		}
+		
+		// First, last, money amount.
+		
+		outFile.println("Joshua Horton 3450");
+		outFile.println("Bill Gates 300000000");
+		outFile.println("Joe Bloe 1");
+	}
+	/*public ArrayList<Passenger> passengers;
+	public ArrayList<Flight> flights;
+	
+	public ImportData(ArrayList<Passenger> ps, ArrayList<Flight> fs){
+		
+		passengers = ps;
+		flights = fs;
+	}*/
+}

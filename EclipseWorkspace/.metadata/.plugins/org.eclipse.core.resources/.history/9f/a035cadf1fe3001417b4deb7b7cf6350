@@ -1,0 +1,13 @@
+import java.util.*;
+
+public class DataManager {
+
+	public static void exportData(String filename, ArrayList<Passenger> passengers, ArrayList<Flight> flights){
+		
+	}
+	
+	public static ImportData importData(String filename){
+		
+		
+	}
+}

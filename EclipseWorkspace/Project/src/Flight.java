@@ -15,7 +15,32 @@ public class Flight {
 		if(src == null || dest == null){
 			
 			throw new RuntimeException();
-		}else if(takeofftime >= landingtime){
+		}else if(takeofftime >= landingtime || takeofftime < 0 || landingtime > 2400){
+			
+			throw new RuntimeException();
+		}else if(src == dest){
+
+			throw new RuntimeException();
+		}
+		
+		if((takeofftime/10)>100){
+			
+			if((takeofftime/100) % 10>5){
+				
+				throw new RuntimeException();
+			}
+		}else if((takeofftime/10) % 10 > 5){
+			
+			throw new RuntimeException();
+		}
+		
+		if((landingtime/10)>100){
+			
+			if((landingtime/100) % 10>5){
+			
+				throw new RuntimeException();
+			}
+		}else if((landingtime/10) % 10 > 5){
 			
 			throw new RuntimeException();
 		}
@@ -156,7 +181,7 @@ public class Flight {
 			
 			for(int i = 0; i < sPassengers.size(); i++){
 				
-				sPassengers.get(i).addAlert("Flight " + this + "changed from standby to booked");
+				sPassengers.get(i).addAlert("The " + takeofftime + " flight from " + src + " to " + dest + " has been booked.");
 				sPassengers.get(i).bookFlight(this);
 				sPassengers.get(i).getStandbyFlights().remove(this);
 				sPassengers.remove(i);
@@ -169,7 +194,7 @@ public class Flight {
 		}else if((capacity - bPassengers.size()) >= sPassengers.size()){
 			for(int j = 0; j < sPassengers.size(); j++){
 				
-				sPassengers.get(j).addAlert("Flight " + this + "changed from standby to booked");	
+				sPassengers.get(j).addAlert("The " + takeofftime + " flight from " + src + " to " + dest + " has been booked.");	
 				sPassengers.get(j).bookFlight(this);
 				sPassengers.get(j).getStandbyFlights().remove(this);
 				sPassengers.remove(j);
