@@ -4,8 +4,8 @@ public class Flight {
 
 	private String src, dest;
 	private int takeofftime, landingtime, capacity;
-	private ArrayList<Passenger> bPassengers = new ArrayList<Passenger>();
-	private ArrayList<Passenger> sPassengers = new ArrayList<Passenger>();
+	private ArrayList<Passenger> bPassengers;
+	private ArrayList<Passenger> sPassengers;
 	
 	/*Flight clearly requires a lot more up-front data for instantiation.
 	 * Note: takeoffTime must come before landingTime. throw a RuntimeException otherwise.
@@ -15,32 +15,39 @@ public class Flight {
 		if(src == null || dest == null){
 			
 			throw new RuntimeException();
-		}else if(takeofftime >= landingtime || takeofftime < 0 || landingtime > 2400){
-			
-			throw new RuntimeException();
-		}else if(src == dest){
-
+		}
+		
+		if(takeofftime > landingtime){
+		
 			throw new RuntimeException();
 		}
 		
-		if((takeofftime/10)>100){
-			
-			if((takeofftime/100) % 10>5){
-				
-				throw new RuntimeException();
-			}
-		}else if((takeofftime/10) % 10 > 5){
+		if(takeofftime < 0){
 			
 			throw new RuntimeException();
 		}
 		
-		if((landingtime/10)>100){
+		if(landingtime > 2400){
+		
+			throw new RuntimeException();
+		}
+		
+		if(takeofftime % 100 >= 60){
 			
-			if((landingtime/100) % 10>5){
+			throw new RuntimeException();
+		}
+		
+		if(landingtime % 100 >= 60){
 			
-				throw new RuntimeException();
-			}
-		}else if((landingtime/10) % 10 > 5){
+			throw new RuntimeException();
+		}
+		
+		if(capacity < 0){
+		
+			throw new RuntimeException();
+		}
+		
+		if(src.equals(dest)){
 			
 			throw new RuntimeException();
 		}
@@ -50,6 +57,9 @@ public class Flight {
 		this.takeofftime = takeofftime;
 		this.landingtime = landingtime;
 		this.capacity = capacity;
+		
+		bPassengers = new ArrayList<Passenger>(capacity);
+		sPassengers = new ArrayList<Passenger>();
 	}
 	
 	//returns the source airport code
@@ -66,7 +76,7 @@ public class Flight {
 	
 	//returns the capacity
 	public int getCapacity(){
-		
+	
 		return capacity;
 	}
 	
@@ -85,13 +95,13 @@ public class Flight {
 	//returns the passengers that are booked
 	public ArrayList<Passenger> getBookedPassengers(){
 		
-		return bPassengers;
+		return new ArrayList<Passenger>(bPassengers);
 	}
 	
 	//return the passengers that are on standby
 	public ArrayList<Passenger> getStandbyPassengers(){
 		
-		return sPassengers;
+		return new ArrayList<Passenger>(sPassengers);
 	}
 	
 	/*Adds the Passenger to the Flight's passenger list.
@@ -105,13 +115,22 @@ public class Flight {
 			throw new RuntimeException();
 		}
 		
-		bPassengers.add(p);
-
 		if(bPassengers.contains(p)){
 			
+			throw new RuntimeException();
+		}
+		
+		if(sPassengers.contains(p)){
+			
+			throw new RuntimeException();
+		}
+		
+		if(bPassengers.size() < capacity){
+			
+			bPassengers.add(p);
 			return true;
 		}else{
-			
+		
 			return false;
 		}
 	}
@@ -119,15 +138,24 @@ public class Flight {
 	/*Adds the Passenger to the Flight's standby list.
 	 * Always succeeds.
 	 * */
-	public boolean addStandbyPassenger(Passenger p){
+	public void addStandbyPassenger(Passenger p){
 		
 		if(p == null){
 			
 			throw new RuntimeException();
 		}
 		
+		if(sPassengers.contains(p)){
+			
+			throw new RuntimeException();
+		}
+		
+		if(bPassengers.contains(p)){
+			
+			throw new RuntimeException();
+		}
+		
 		sPassengers.add(p);
-		return true;
 	}
 	
 	/*Removes the Passenger from the Flight's passenger list.
@@ -151,17 +179,19 @@ public class Flight {
 	 * All Passengers receive an alert about the cancellation.
 	 * */
 	public void cancel(){
-		
-		for(int i = 0; i < bPassengers.size(); i++){
+	
+		while(bPassengers.size() > 0){
 			
-			bPassengers.get(i).addAlert("Removed from flight: " + this);
-			bPassengers.get(i).cancelFlight(this);
+			Passenger p = bPassengers.get(0);
+			p.addAlert("The " + takeofftime + " flight from " + src + " to " + dest + " has been cancelled.");
+			p.cancelFlight(this);
 		}
 		
-		for(int i = 0; i < sPassengers.size(); i++){
-			
-			sPassengers.get(i).addAlert("Removed from stanby for flight: " + this);
-			sPassengers.get(i).cancelFlight(this);
+		while(sPassengers.size() > 0){
+		
+			Passenger p = sPassengers.get(0);
+			p.addAlert("Your tentative (standby) " + takeofftime + " flight from " + src + " to " + dest + " has been cancelled.");
+			p.cancelFlight(this);
 		}
 	}
 	
@@ -174,35 +204,27 @@ public class Flight {
 	 * Each Passenger "promoted" by this method call should receive an alert about
 	 * their change in booking status.*/
 	public int promotePassengers(){
-
-		int initial = sPassengers.size();
 		
-		if(bPassengers.size() != capacity){
+		int emptySpace = capacity - bPassengers.size();
+		
+		if(emptySpace < 0){
 			
-			for(int i = 0; i < sPassengers.size(); i++){
-				
-				sPassengers.get(i).addAlert("The " + takeofftime + " flight from " + src + " to " + dest + " has been booked.");
-				sPassengers.get(i).bookFlight(this);
-				sPassengers.get(i).getStandbyFlights().remove(this);
-				sPassengers.remove(i);
-				
-				if(bPassengers.size() == capacity){
-					
-					break;
-				}
-			}
-		}else if((capacity - bPassengers.size()) >= sPassengers.size()){
-			for(int j = 0; j < sPassengers.size(); j++){
-				
-				sPassengers.get(j).addAlert("The " + takeofftime + " flight from " + src + " to " + dest + " has been booked.");	
-				sPassengers.get(j).bookFlight(this);
-				sPassengers.get(j).getStandbyFlights().remove(this);
-				sPassengers.remove(j);
-			}
+			throw new IllegalStateException();
 		}
 		
-		int end = sPassengers.size();
+		int count = 0;
 		
-		return initial - end;
+		while(emptySpace > 0 && sPassengers.size() > 0){
+			
+			Passenger p = sPassengers.get(0);
+			p.cancelFlight(this);
+			p.bookFlight(this);
+			
+			p.addAlert("You now have guaranteed seating on the " + takeofftime + " flight from " + src + " to " + dest + ".");
+			emptySpace--;
+			count++;
+		}
+		
+		return count;
 	}	
 }
